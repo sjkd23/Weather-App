@@ -1,14 +1,68 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant fancy (&:where(.fancy, .fancy *));
 
-/* Core browser/typography setup (optional, minimal) */
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/*
+  ---------------------------------------------------------------------
+  FORECAST CARD DIVIDER (vertical) BETWEEN COLUMNS
+  ---------------------------------------------------------------------
+  These rules control the vertical divider lines between forecast cards
+  in the grid, adapting to different screen sizes and column counts.
+*/
+
+/* Mobile (<= 639px): hide all dividers */
+@media (max-width: 639px) {
+  .forecast-grid>div.relative::after {
+    display: none;
+  }
 }
 
-body {
-  margin: 0;
+/* Small screens (>= 640px and < 1024px): 2 columns, hide divider after every 2nd card */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .forecast-grid>div.relative:nth-child(2n)::after {
+    display: none;
+  }
+}
+
+/* Large screens (>= 1024px and < 1280px): 3 columns, hide divider after every 3rd card */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .forecast-grid>div.relative:nth-child(3n)::after {
+    display: none;
+  }
+}
+
+/* Extra-large screens (>= 1280px): 5 columns, hide divider after every 5th card */
+@media (min-width: 1280px) {
+  .forecast-grid>div.relative:nth-child(5n)::after {
+    display: none;
+  }
+}
+
+/* Always position the divider on the right of each card by default */
+.forecast-grid>div.relative {
+  position: relative;
+}
+
+/* Default divider style: vertical gradient line */
+.forecast-grid>div.relative::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -0.75rem;
+  width: 1px;
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      #E5E7EB 15%,
+      #005eff 85%,
+      transparent 100%);
+}
+
+/* Divider style for dark mode */
+.dark .forecast-grid>div.relative::after {
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      #374151 15%,
+      #374151 85%,
+      transparent 100%);
 }

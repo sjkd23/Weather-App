@@ -1,9 +1,10 @@
-function Error({ message }) {
+
+// This component displays an error message if one is provided.
+export default function Error({ message }) {
+  if (!message) return null;
   return (
-    <p className="text-red-500 font-medium mt-2 transition-opacity duration-300 opacity-100">
-      Error: {message}
-    </p>
+    <div className="mt-4 p-3 bg-red-100 text-red-800 rounded">
+      <p>Error: {message}</p>
+    </div>
   );
 }
-
-export default Error;
