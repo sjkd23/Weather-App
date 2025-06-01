@@ -1,5 +1,8 @@
 # Weather App
 
+
+Link to hosted site: <https://weather-app-4es7.onrender.com>
+
 A modern weather forecasting web application built with React and Tailwind CSS. It allows users to search for cities, view current weather, and see a 5-day forecast with a clean, responsive UI. The app uses the OpenWeatherMap API for weather and geocoding data.
 
 ## Features
