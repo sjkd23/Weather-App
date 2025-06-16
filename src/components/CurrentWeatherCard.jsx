@@ -1,5 +1,6 @@
 // src/components/CurrentWeatherCard.jsx
 import { useState } from 'react';
+import { toFahrenheit, toMPH } from '../utils/conversionUtils';
 
 export default function CurrentWeatherCard({ weather, unit }) {
   const [showDetails, setShowDetails] = useState(false);
@@ -7,11 +8,15 @@ export default function CurrentWeatherCard({ weather, unit }) {
   // Don't render if no weather data
   if (!weather) return null;
 
+  // Apply unit conversion if needed
+  const temp = unit === 'imperial' ? toFahrenheit(weather.main.temp) : Math.round(weather.main.temp);
+  const feels = unit === 'imperial' ? toFahrenheit(weather.main.feels_like) : Math.round(weather.main.feels_like);
+  const high = unit === 'imperial' ? toFahrenheit(weather.main.temp_max) : Math.round(weather.main.temp_max);
+  const low = unit === 'imperial' ? toFahrenheit(weather.main.temp_min) : Math.round(weather.main.temp_min);
+  const wind = unit === 'imperial' ? toMPH(weather.wind.speed) : Math.round(weather.wind.speed);
+
   // Weather icon URL
   const iconUrl = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
-  // Main temperature and feels-like, rounded
-  const temp = Math.round(weather.main.temp);
-  const feels = Math.round(weather.main.feels_like);
 
   // Calculate local time for the city
   const localTimestamp = (weather.dt + weather.timezone) * 1000;
@@ -84,16 +89,10 @@ export default function CurrentWeatherCard({ weather, unit }) {
 
       {/* Main weather info and icon */}
       <div
-        className={`flex w-full ${
-          showDetails ? 'justify-center items-center' : 'justify-center'
-        }`}
+        className={`flex w-full ${showDetails ? 'justify-center items-center' : 'justify-center'}`}
       >
         <div
-          className={
-            showDetails
-              ? 'flex-shrink-0 flex flex-col items-center'
-              : 'flex flex-col items-center'
-          }
+          className={showDetails ? 'flex-shrink-0 flex flex-col items-center' : 'flex flex-col items-center'}
         >
           <img
             src={iconUrl}
@@ -124,12 +123,12 @@ export default function CurrentWeatherCard({ weather, unit }) {
           <div className="mt-2 flex items-center space-x-2 text-sm sm:text-base">
             <span className="flex items-center text-red-600 dark:text-red-400">
               <span className="mr-1">▲</span>
-              {Math.round(weather.main.temp_max)}°
+              {high}°
             </span>
             <span className="text-gray-500 dark:text-gray-400">|</span>
             <span className="flex items-center text-blue-600 dark:text-blue-400">
               <span className="mr-1">▼</span>
-              {Math.round(weather.main.temp_min)}°
+              {low}°
             </span>
           </div>
         </div>
@@ -156,10 +155,7 @@ export default function CurrentWeatherCard({ weather, unit }) {
               </div>
               <div className="flex justify-between py-2 px-4">
                 <span className="font-medium">Wind Speed:</span>
-                <span>
-                  {Math.round(weather.wind.speed)}{' '}
-                  {unit === 'metric' ? 'm/s' : 'mph'}
-                </span>
+                <span>{wind} {unit === 'metric' ? 'm/s' : 'mph'}</span>
               </div>
               {visibilityInKm !== null && (
                 <div className="flex justify-between py-2 px-4">

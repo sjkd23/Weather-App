@@ -29,12 +29,8 @@ export default function App() {
 
   useEffect(() => {
     const htmlEl = document.documentElement;
-    htmlEl.classList.remove('dark', 'fancy');
-    if (theme === 'dark') {
-      htmlEl.classList.add('dark');
-    } else if (theme === 'fancy') {
-      htmlEl.classList.add('fancy');
-    }
+    htmlEl.classList.remove('light', 'dark', 'fancy');
+    htmlEl.classList.add(theme);
   }, [theme]);
 
   // ------------------------ //
@@ -47,8 +43,7 @@ export default function App() {
 
   const { weather, forecast, loading, error: weatherError } = useWeatherData(
     coords.lat,
-    coords.lon,
-    unit
+    coords.lon
   );
 
   // Propagate any weather‐related error into local `error`

@@ -1,3 +1,6 @@
+// src/components/Forecast/ForecastCard.jsx
+import { toFahrenheit } from '../../utils/conversionUtils';
+
 export default function ForecastCard({ dt, min, max, icon, desc, unit }) {
   // Convert Unix timestamp to JS Date object
   const date = new Date(dt * 1000);
@@ -10,6 +13,10 @@ export default function ForecastCard({ dt, min, max, icon, desc, unit }) {
     month: 'short',
     day: 'numeric',
   });
+
+  // Apply unit conversion
+  const high = unit === 'imperial' ? toFahrenheit(max) : Math.round(max);
+  const low = unit === 'imperial' ? toFahrenheit(min) : Math.round(min);
 
   return (
     <div
@@ -66,7 +73,7 @@ export default function ForecastCard({ dt, min, max, icon, desc, unit }) {
           "
         >
           <span className="mr-1">▲</span>
-          {Math.round(max)}°{unit === 'metric' ? 'C' : 'F'}
+          {high}°{unit === 'metric' ? 'C' : 'F'}
         </span>
         <span className="text-gray-500 dark:text-gray-400">|</span>
         {/* Low temperature */}
@@ -79,7 +86,7 @@ export default function ForecastCard({ dt, min, max, icon, desc, unit }) {
           "
         >
           <span className="mr-1">▼</span>
-          {Math.round(min)}°{unit === 'metric' ? 'C' : 'F'}
+          {low}°{unit === 'metric' ? 'C' : 'F'}
         </span>
       </div>
     </div>
